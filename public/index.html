@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InboxPilot — Je inbox op orde in minuten</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: #0f1c31;
+      --panel-2: #132540;
+      --text: #eef4ff;
+      --muted: #9bb0d0;
+      --line: #213556;
+      --brand: #6ee7b7;
+      --brand-2: #38bdf8;
+      --danger: #f59e0b;
+      --critical: #fb7185;
+      --shadow: 0 20px 50px rgba(0,0,0,.35);
+      --radius: 20px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #07101d 0%, #0b1729 100%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 0;
+    }
+    .logo { font-weight: 800; letter-spacing: .2px; }
+    .badge {
+      display: inline-flex; gap: 8px; align-items: center;
+      border: 1px solid rgba(110,231,183,.25);
+      background: rgba(110,231,183,.08);
+      color: var(--brand);
+      padding: 8px 12px; border-radius: 999px; font-size: 14px;
+    }
+    .hero {
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px;
+      align-items: center; padding: 40px 0 56px;
+    }
+    .hero h1 {
+      font-size: clamp(38px, 6vw, 66px);
+      line-height: .97; margin: 16px 0;
+      letter-spacing: -1.8px;
+    }
+    .hero p.lead { color: var(--muted); font-size: 20px; max-width: 700px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 14px 20px; border-radius: 14px; font-weight: 700;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .btn-primary { background: linear-gradient(90deg, var(--brand), var(--brand-2)); color: #05111e; }
+    .btn-secondary { background: transparent; border-color: var(--line); color: var(--text); }
+    .panel {
+      background: linear-gradient(180deg, rgba(19,37,64,.95), rgba(15,28,49,.95));
+      border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    .hero-card { padding: 22px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; margin-top: 18px; }
+    .stat {
+      padding: 16px; border-radius: 16px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
+    }
+    .eyebrow { color: var(--brand); text-transform: uppercase; letter-spacing: .18em; font-size: 12px; font-weight: 800; }
+    section { padding: 44px 0; }
+    h2 { font-size: 34px; margin: 0 0 10px; letter-spacing: -1px; }
+    .sub { color: var(--muted); max-width: 760px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 18px; }
+    .card { padding: 22px; }
+    .card h3 { margin: 0 0 10px; }
+    .muted { color: var(--muted); }
+    .pricing { align-items: stretch; }
+    .price-card { display: flex; flex-direction: column; height: 100%; }
+    .price { font-size: 36px; font-weight: 800; margin: 8px 0 0; }
+    .price small { font-size: 15px; color: var(--muted); font-weight: 600; }
+    .feature-list { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .feature-list li::before { content: '✓'; color: var(--brand); margin-right: 10px; }
+    .popular { outline: 2px solid rgba(56,189,248,.45); position: relative; }
+    .popular-tag {
+      position: absolute; top: 14px; right: 14px; background: rgba(56,189,248,.14);
+      color: var(--brand-2); padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 800;
+    }
+    .compare { overflow-x: auto; }
+    table {
+      width: 100%; border-collapse: collapse; min-width: 920px;
+      background: rgba(255,255,255,.02); border-radius: 16px; overflow: hidden;
+    }
+    th, td { padding: 16px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { color: var(--text); background: rgba(255,255,255,.03); }
+    td { color: var(--muted); }
+    .cta {
+      display: grid; grid-template-columns: 1fr .95fr; gap: 24px; align-items: start;
+    }
+    form { display: grid; gap: 14px; }
+    label { font-size: 14px; font-weight: 700; color: var(--text); display: grid; gap: 8px; }
+    input, select, textarea {
+      width: 100%; padding: 14px 14px; border-radius: 12px; border: 1px solid var(--line);
+      background: #091425; color: var(--text); font: inherit;
+    }
+    textarea { min-height: 112px; resize: vertical; }
+    .inline { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .mini { font-size: 13px; color: var(--muted); }
+    .success {
+      display: none; margin-top: 14px; padding: 14px; border-radius: 14px;
+      background: rgba(110,231,183,.1); border: 1px solid rgba(110,231,183,.3); color: var(--brand);
+    }
+    .steps { display: grid; gap: 14px; }
+    .step { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
+    .step-num {
+      width: 44px; height: 44px; border-radius: 12px; background: rgba(56,189,248,.12);
+      border: 1px solid rgba(56,189,248,.25); display: flex; align-items: center; justify-content: center; font-weight: 800;
+    }
+    .faq { display: grid; gap: 14px; }
+
+    .demo-toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0 22px; }
+    .pill {
+      border: 1px solid var(--line); background: rgba(255,255,255,.03); color: var(--text);
+      border-radius: 999px; padding: 10px 14px; cursor: pointer; font-weight: 700;
+    }
+    .pill.active { background: rgba(56,189,248,.15); border-color: rgba(56,189,248,.55); color: #d6f2ff; }
+    .demo-shell { display: grid; grid-template-columns: 1.05fr .95fr; gap: 18px; align-items: start; }
+    .demo-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin: 18px 0 22px; }
+    .demo-stat {
+      padding: 16px; border-radius: 16px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
+    }
+    .demo-stat strong { display: block; font-size: 26px; }
+    .demo-headline { color: #dff8ff; font-size: 18px; margin-top: 8px; }
+    .inbox-list { display: grid; gap: 12px; }
+    .inbox-item {
+      padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03); cursor: pointer; transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .inbox-item:hover { transform: translateY(-1px); border-color: rgba(56,189,248,.45); }
+    .inbox-item.active { border-color: rgba(110,231,183,.6); background: rgba(110,231,183,.07); }
+    .item-top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+    .item-subject { font-weight: 800; }
+    .item-meta, .item-preview { color: var(--muted); font-size: 14px; }
+    .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .chip {
+      font-size: 12px; font-weight: 800; border-radius: 999px; padding: 6px 10px;
+      border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.04); color: #dcecff;
+    }
+    .chip.p1 { background: rgba(251,113,133,.12); border-color: rgba(251,113,133,.35); color: #ffd6df; }
+    .chip.p2 { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.35); color: #ffe4b3; }
+    .chip.p3 { background: rgba(110,231,183,.12); border-color: rgba(110,231,183,.35); color: #d6ffe8; }
+    .chip.p4 { background: rgba(148,163,184,.12); border-color: rgba(148,163,184,.35); color: #d9e6f7; }
+    .demo-pane { padding: 22px; }
+    .detail-block { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .detail-block:last-child { border-bottom: 0; }
+    .detail-block h4 { margin: 0 0 8px; }
+    .detail-list { margin: 0; padding-left: 18px; color: var(--muted); }
+    .detail-list li { margin: 6px 0; }
+    .draft {
+      white-space: pre-wrap; background: #091425; border: 1px solid var(--line); border-radius: 14px;
+      padding: 14px; color: #ecf6ff; font-size: 14px;
+    }
+    .digest-box {
+      padding: 18px; border-radius: 18px; background: rgba(56,189,248,.08); border: 1px solid rgba(56,189,248,.22);
+      margin-top: 18px;
+    }
+    footer { padding: 40px 0 60px; color: var(--muted); }
+    @media (max-width: 980px) {
+      .hero, .cta, .grid-5, .grid-3, .demo-shell { grid-template-columns: 1fr; }
+      .inline, .demo-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <div class="logo">InboxPilot</div>
+      <div class="badge">Eerste maand gratis • Geen call nodig • Binnen minuten live</div>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">AI-first inbox operations</div>
+        <h1>Laat je inbox zichzelf organiseren.</h1>
+        <p class="lead">InboxPilot sorteert, prioriteert, vat samen en bereidt antwoorden voor. Voor particulieren, zzp, mkb en enterprise teams. Start gratis en ga binnen minuten live.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#start">Start gratis</a>
+          <a class="btn btn-secondary" href="#demo">Bekijk demo</a>
+        </div>
+        <p style="margin-top:14px; font-size:13px; color:var(--muted);">🔒 Review-first: InboxPilot verstuurt nooit automatisch mails namens jou. <a href="#trust" style="color:var(--brand);">Lees meer over privacy →</a></p>
+        <div class="stat-grid">
+          <div class="stat"><strong>Vanaf €49 p/m</strong><br><span class="muted">Goedkoper dan één uur administratief werk</span></div>
+          <div class="stat"><strong>1e maand gratis</strong><br><span class="muted">Laag risico, snelle activatie</span></div>
+          <div class="stat"><strong>Geen intake</strong><br><span class="muted">Geen sales calls, geen handmatige offerte</span></div>
+          <div class="stat"><strong>Instant setup</strong><br><span class="muted">Formulier → auto-config → direct starten</span></div>
+        </div>
+      </div>
+      <div class="panel hero-card">
+        <div class="eyebrow">Wat je direct krijgt</div>
+        <h3>Rust, overzicht en follow-up zonder extra admin-FTE</h3>
+        <ul class="feature-list">
+          <li>Inboxtriage en prioriteiten</li>
+          <li>Korte samenvattingen per mail</li>
+          <li>Conceptantwoorden in jouw tone of voice</li>
+          <li>Taakextractie en follow-up reminders</li>
+          <li>Dagelijkse digest en routing</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Het probleem</div>
+      <h2>Je inbox kost meer tijd dan je denkt.</h2>
+      <p class="sub">Belangrijke mails verdwijnen tussen ruis. Follow-ups worden vergeten. Teams reageren traag. En voor kleine bedrijven voelt een extra administratieve kracht al snel te duur.</p>
+      <div class="grid-3" style="margin-top:20px;">
+        <div class="panel card"><h3>Chaos</h3><p class="muted">Te veel mails, te weinig overzicht en geen duidelijke volgorde van belangrijkheid.</p></div>
+        <div class="panel card"><h3>Verlies</h3><p class="muted">Leads, offertes en klantvragen blijven te lang liggen of verdwijnen helemaal.</p></div>
+        <div class="panel card"><h3>Kosten</h3><p class="muted">Extra capaciteit kost veel meer dan nodig is voor dit soort terugkerend inboxwerk.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">De oplossing</div>
+      <h2>InboxPilot doet het eerste, saaie en terugkerende werk al voor je.</h2>
+      <div class="grid-3" style="margin-top:20px;">
+        <div class="panel card"><h3>Prioriteren</h3><p class="muted">InboxPilot zet de belangrijkste mails bovenaan en markeert wat vandaag aandacht nodig heeft.</p></div>
+        <div class="panel card"><h3>Samenvatten</h3><p class="muted">Iedere mail krijgt een korte, duidelijke samenvatting zodat je sneller beslissingen neemt.</p></div>
+        <div class="panel card"><h3>Voorbereiden</h3><p class="muted">Conceptantwoorden, follow-ups en routing staan al klaar voordat jij begint.</p></div>
+      </div>
+    </section>
+
+    <section id="demo">
+      <div class="eyebrow">Feature simulation</div>
+      <h2>Laat in 30 seconden zien waar klanten voor betalen.</h2>
+      <p class="sub">Deze demo is seeded met realistische inboxitems en draait live vanuit de MVP-server. Je ziet direct triage, samenvatting, reply draft en follow-up acties voor verschillende plans.</p>
+
+      <div class="demo-toolbar" id="demoToolbar">
+        <button class="pill active" data-plan="solo">Solo</button>
+        <button class="pill" data-plan="pro">Pro</button>
+        <button class="pill" data-plan="team">Team</button>
+        <button class="pill" data-plan="ops">Ops</button>
+        <button class="pill" data-plan="enterprise">Enterprise</button>
+      </div>
+
+      <div class="panel card">
+        <div class="eyebrow" id="demoPlanLabel">Team</div>
+        <div class="demo-headline" id="demoHeadline">Demo laden…</div>
+        <div class="demo-stats" id="demoStats"></div>
+        <div class="demo-shell">
+          <div>
+            <h3 style="margin-top:0;">Seeded inbox</h3>
+            <div class="inbox-list" id="demoInbox"></div>
+          </div>
+          <div class="panel demo-pane">
+            <div class="detail-block">
+              <div class="eyebrow">InboxPilot output</div>
+              <h3 id="detailSubject" style="margin:8px 0 0;">Selecteer een bericht</h3>
+              <p class="muted" id="detailMeta">Triage, samenvatting, draft en acties verschijnen hier.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Korte samenvatting</h4>
+              <p class="muted" id="detailSummary">—</p>
+            </div>
+            <div class="detail-block">
+              <h4>Waarom InboxPilot dit omhoog zet</h4>
+              <ul class="detail-list" id="detailWhy"></ul>
+            </div>
+            <div class="detail-block">
+              <h4>Conceptantwoord</h4>
+              <div class="draft" id="detailDraft">—</div>
+            </div>
+            <div class="detail-block">
+              <h4>Directe follow-up acties</h4>
+              <ul class="detail-list" id="detailActions"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="digest-box">
+          <div class="eyebrow">Operator digest</div>
+          <ul class="detail-list" id="demoDigest"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="eyebrow">Pricing</div>
+      <h2>Klein beginnen, veel meer krijgen als je opschaalt.</h2>
+      <p class="sub">De kleinste tier is een no-brainer voor particulier of zzp. Hogere tiers voelen als een echte sprong vooruit, niet als een paar mini-features extra.</p>
+      <div class="grid-5 pricing" style="margin-top:22px;">
+        <div class="panel card price-card">
+          <h3>Solo</h3>
+          <div class="price">€49 <small>/ maand</small></div>
+          <p class="muted">Voor 1 mailbox, 1 gebruiker.</p>
+          <ul class="feature-list">
+            <li>Basis triage</li>
+            <li>Samenvattingen</li>
+            <li>Conceptantwoorden</li>
+            <li>Dagelijkse digest</li>
+          </ul>
+        </div>
+        <div class="panel card price-card">
+          <h3>Pro</h3>
+          <div class="price">€149 <small>/ maand</small></div>
+          <p class="muted">Voor 1-3 mailboxen en kleine teams.</p>
+          <ul class="feature-list">
+            <li>Alles uit Solo</li>
+            <li>Taakextractie</li>
+            <li>Follow-up reminders</li>
+            <li>Automationregels</li>
+          </ul>
+        </div>
+        <div class="panel card price-card popular">
+          <div class="popular-tag">Sweet spot</div>
+          <h3>Team</h3>
+          <div class="price">€349 <small>/ maand</small></div>
+          <p class="muted">Voor 3-10 mailboxen, routing en teaminboxen.</p>
+          <ul class="feature-list">
+            <li>Alles uit Pro</li>
+            <li>Teamrouting</li>
+            <li>SLA-prioritering</li>
+            <li>Interne notities</li>
+          </ul>
+        </div>
+        <div class="panel card price-card">
+          <h3>Ops</h3>
+          <div class="price">€749 <small>/ maand</small></div>
+          <p class="muted">Voor mailbox-zware bedrijven.</p>
+          <ul class="feature-list">
+            <li>Alles uit Team</li>
+            <li>Approval flows</li>
+            <li>Meerdere workflows</li>
+            <li>KPI dashboard</li>
+          </ul>
+        </div>
+        <div class="panel card price-card">
+          <h3>Enterprise</h3>
+          <div class="price">v.a. €1.500 <small>/ maand</small></div>
+          <p class="muted">Voor governance, audit en maatwerkregels.</p>
+          <ul class="feature-list">
+            <li>Alles uit Ops</li>
+            <li>Audit logging</li>
+            <li>Custom permissions</li>
+            <li>Dedicated rollout</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="panel card" style="margin-top:22px; background:rgba(110,231,183,.05); border-color:rgba(110,231,183,.2);">
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:18px; text-align:center;">
+          <div><strong style="font-size:22px;">30 dagen</strong><br><span class="muted">Gratis proberen, geen verplichtingen</span></div>
+          <div><strong style="font-size:22px;">Maandelijks</strong><br><span class="muted">Opzegbaar per maand, geen jaarcontract</span></div>
+          <div><strong style="font-size:22px;">€0 setup</strong><br><span class="muted">Geen eenmalige kosten of intake fees</span></div>
+          <div><strong style="font-size:22px;">100% risico-vrij</strong><br><span class="muted">Niet tevreden? Maand 1 kost je niets</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Feature ladder</div>
+      <h2>Meer betalen is ook echt veel meer krijgen.</h2>
+      <div class="panel compare" style="margin-top:20px; padding:0;">
+        <table>
+          <thead>
+            <tr><th>Feature</th><th>Solo</th><th>Pro</th><th>Team</th><th>Ops</th><th>Enterprise</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Mailboxen</td><td>1</td><td>1-3</td><td>3-10</td><td>10+</td><td>Custom</td></tr>
+            <tr><td>Samenvattingen</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Conceptantwoorden</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Taakextractie</td><td>—</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Follow-up reminders</td><td>—</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Teamrouting</td><td>—</td><td>Basis</td><td>Geavanceerd</td><td>Multi-flow</td><td>Custom</td></tr>
+            <tr><td>SLA / escalatie</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Approval flows</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Audit / governance</td><td>—</td><td>—</td><td>—</td><td>Basis</td><td>Volledig</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Hoe het werkt</div>
+      <h2>Van formulier naar werkende inboxlaag in een paar minuten.</h2>
+      <div class="steps" style="margin-top:20px;">
+        <div class="panel card step"><div class="step-num">1</div><div><h3>Kies je plan</h3><p class="muted">Solo, Pro, Team, Ops of Enterprise. Eerste maand gratis.</p></div></div>
+        <div class="panel card step"><div class="step-num">2</div><div><h3>Vul één kort formulier in</h3><p class="muted">Mailboxtype, soort mails, gewenste acties en tone of voice.</p></div></div>
+        <div class="panel card step"><div class="step-num">3</div><div><h3>InboxPilot richt alles direct in</h3><p class="muted">Categorieën, regels, digest, routing en quickstart worden automatisch klaargezet.</p></div></div>
+        <div class="panel card step"><div class="step-num">4</div><div><h3>Start meteen</h3><p class="muted">Je ziet direct prioriteiten, samenvattingen, conceptantwoorden en follow-ups.</p></div></div>
+      </div>
+    </section>
+
+    <section id="trust">
+      <div class="eyebrow">Veiligheid & privacy</div>
+      <h2>Je inbox is privé. Dat houden we zo.</h2>
+      <p class="sub">InboxPilot leest je mail om te helpen, niet om data te verzamelen. Hier is precies hoe dat werkt.</p>
+      <div class="grid-3" style="margin-top:20px;">
+        <div class="panel card">
+          <h3>🔒 Review-first principe</h3>
+          <p class="muted">InboxPilot bereidt conceptantwoorden en samenvattingen voor, maar <strong>verstuurt nooit automatisch</strong>. Elke reply moet door jou goedgekeurd worden voordat er iets je inbox verlaat.</p>
+        </div>
+        <div class="panel card">
+          <h3>🛡️ Geen doorverkoop van data</h3>
+          <p class="muted">Je maildata wordt alleen gebruikt om jouw inbox te organiseren. We verkopen, delen of gebruiken je data niet voor training van AI-modellen of advertenties. Punt.</p>
+        </div>
+        <div class="panel card">
+          <h3>🗑️ Wissen wanneer je wilt</h3>
+          <p class="muted">Stop je met InboxPilot? Dan verwijderen we al je data binnen 30 dagen. Je kunt ook tussentijds een volledige export opvragen.</p>
+        </div>
+      </div>
+      <div class="grid-3" style="margin-top:14px;">
+        <div class="panel card">
+          <h3>📋 Wat InboxPilot wél doet</h3>
+          <ul class="feature-list" style="font-size:14px;">
+            <li>Inkomende mail lezen en prioriteren</li>
+            <li>Samenvattingen en conceptantwoorden maken</li>
+            <li>Follow-ups en taken extraheren</li>
+            <li>Dagelijkse digest genereren</li>
+          </ul>
+        </div>
+        <div class="panel card">
+          <h3>🚫 Wat InboxPilot niet doet</h3>
+          <ul class="feature-list" style="font-size:14px;">
+            <li style="list-style:none;padding:0;">❌ Automatisch mails versturen namens jou</li>
+            <li style="list-style:none;padding:0;">❌ Data delen met derden of adverteerders</li>
+            <li style="list-style:none;padding:0;">❌ Je mailbox wijzigen zonder jouw bevestiging</li>
+            <li style="list-style:none;padding:0;">❌ Bijlagen openen of doorsturen</li>
+          </ul>
+        </div>
+        <div class="panel card">
+          <h3>🏢 Wie zit erachter?</h3>
+          <p class="muted"><strong>Praesidion Security B.V.</strong> — Nederlands beveiligingsbedrijf, KvK 97640794, gevestigd in Limburg. InboxPilot is gebouwd door een team dat security in het DNA heeft. Vragen? Mail <a href="mailto:emily@praesidion.com" style="color:var(--brand);">emily@praesidion.com</a> of bel <a href="tel:0462402401" style="color:var(--brand);">046 240 2401</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="start">
+      <div class="eyebrow">Start gratis</div>
+      <h2>Geen call. Geen offerte. Gewoon starten.</h2>
+      <div class="cta" style="margin-top:20px;">
+        <div class="panel card">
+          <form id="signupForm">
+            <div class="inline">
+              <label>Voornaam<input required name="firstName" placeholder="Emily" /></label>
+              <label>Achternaam<input required name="lastName" placeholder="van Praesidion" /></label>
+            </div>
+            <div class="inline">
+              <label>E-mailadres<input required type="email" name="email" placeholder="jij@bedrijf.nl" /></label>
+              <label>Bedrijfsnaam<input name="company" placeholder="Optioneel voor particulier" /></label>
+            </div>
+            <div class="inline">
+              <label>Type gebruiker
+                <select name="userType">
+                  <option>particulier</option>
+                  <option>zzp</option>
+                  <option>mkb</option>
+                  <option>enterprise</option>
+                </select>
+              </label>
+              <label>Aantal mailboxen
+                <select name="mailboxes">
+                  <option>1</option>
+                  <option>2-3</option>
+                  <option>4-10</option>
+                  <option>10+</option>
+                </select>
+              </label>
+            </div>
+            <label>Wat voor mails ontvang je vooral?
+              <textarea name="mailTypes" placeholder="Bijv. klantvragen, offertes, facturen, support, afspraken"></textarea>
+            </label>
+            <label>Wat wil je dat InboxPilot doet?
+              <textarea name="actions" placeholder="Bijv. prioriteren, samenvatten, conceptantwoorden, taken extraheren, reminders, routing"></textarea>
+            </label>
+            <div class="inline">
+              <label>Tone of voice
+                <select name="tone">
+                  <option>kort zakelijk</option>
+                  <option>vriendelijk</option>
+                  <option>professioneel warm</option>
+                  <option>direct</option>
+                </select>
+              </label>
+              <label>Plan
+                <select name="plan">
+                  <option>Solo — €49</option>
+                  <option>Pro — €149</option>
+                  <option selected>Team — €349</option>
+                  <option>Ops — €749</option>
+                  <option>Enterprise — vanaf €1.500</option>
+                </select>
+              </label>
+            </div>
+            <label class="mini"><input required type="checkbox" style="width:auto; margin-right:8px;" /> Ik ga akkoord met maand 1 gratis en betaalde voortzetting vanaf maand 2 volgens het gekozen plan.</label>
+            <button class="btn btn-primary" type="submit">Start mijn gratis maand</button>
+            <div style="margin-top:12px; padding:12px; border-radius:12px; background:rgba(110,231,183,.06); border:1px solid rgba(110,231,183,.15); font-size:13px; color:var(--muted);">
+              🔒 <strong style="color:var(--brand);">Veilig starten:</strong> Geen creditcard nodig voor maand 1. Je data wordt niet gedeeld met derden. Maandelijks opzegbaar. <a href="#trust" style="color:var(--brand);">Privacy & veiligheid →</a>
+            </div>
+            <div class="success" id="successBox"></div>
+          </form>
+          <div class="mini" style="margin-top:12px;">Na submit land je in je <strong>preview workspace</strong> met seeded inboxitems. Daar kun je direct prioriteiten triagen, drafts goedkeuren en follow-ups beheren. De live mailbox-koppeling activeer je daarna vanuit je dashboard.</div>
+        </div>
+        <div class="panel card">
+          <h3>Wat er direct na submit gebeurt</h3>
+          <ul class="feature-list">
+            <li>Plan en segment worden automatisch geselecteerd</li>
+            <li>Standaard categorieën worden gegenereerd</li>
+            <li>Tone of voice wordt ingesteld</li>
+            <li>Digest en follow-up logica worden geactiveerd</li>
+            <li>Quickstart en onboardingmail worden klaargezet</li>
+          </ul>
+          <p class="muted">Voor de MVP is dit een directe productflow en demonstrabele activatie-ervaring. Leads worden server-side append-only opgeslagen zodat de ochtendoperator een echte audit trail en statusoverzicht heeft. De live mailbox-koppeling en productie-automatisering vormen de volgende hardeninglaag.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">FAQ</div>
+      <h2>Korte antwoorden op de belangrijkste vragen.</h2>
+      <div class="faq" style="margin-top:20px;">
+        <div class="panel card"><h3>Moet ik eerst bellen of een intake plannen?</h3><p class="muted">Nee. InboxPilot is juist opgezet als no-call product. Je kiest een plan, vult een kort formulier in en start direct.</p></div>
+        <div class="panel card"><h3>Is het ook geschikt voor particulieren?</h3><p class="muted">Ja. Solo is bewust laagdrempelig geprijsd en werkt ook voor persoonlijke mailboxen of éénmanszaken.</p></div>
+        <div class="panel card"><h3>Waarom eerste maand gratis?</h3><p class="muted">Omdat usage en adoptie belangrijker zijn dan drempels. Eerst waarde voelen, daarna logisch doorlopen naar betaald.</p></div>
+        <div class="panel card"><h3>Kan InboxPilot mails versturen namens mij?</h3><p class="muted">Nee, niet automatisch. InboxPilot bereidt conceptantwoorden voor, maar jij moet elk antwoord expliciet goedkeuren en verzenden. We werken met een review-first principe: niets verlaat je inbox zonder jouw bevestiging.</p></div>
+        <div class="panel card"><h3>Wat gebeurt er met mijn maildata?</h3><p class="muted">Je maildata wordt uitsluitend gebruikt om jouw inbox te organiseren. We verkopen het niet, gebruiken het niet voor AI-training en delen het niet met derden. Bij opzegging wordt alles binnen 30 dagen verwijderd.</p></div>
+        <div class="panel card"><h3>Wie zit er achter InboxPilot?</h3><p class="muted">InboxPilot is een product van Praesidion Security B.V. (KvK 97640794), een Nederlands beveiligingsbedrijf uit Limburg. Security zit letterlijk in ons DNA. Vragen? Bel 046 240 2401 of mail emily@praesidion.com.</p></div>
+        <div class="panel card"><h3>Zit ik ergens aan vast na de gratis maand?</h3><p class="muted">Nee. Alle plannen zijn maandelijks opzegbaar. Geen jaarcontract, geen opzegtermijn, geen verborgen kosten. Als je na maand 1 stopt, betaal je niets.</p></div>
+        <div class="panel card"><h3>Kan ik tussentijds upgraden of downgraden?</h3><p class="muted">Ja, op elk moment. Je betaalt vanaf de volgende maand het nieuwe tarief. Downgraden kan ook — je verliest dan alleen features die bij het hogere plan horen.</p></div>
+      </div>
+    </section>
+
+    <footer>
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; align-items:center;">
+        <div>InboxPilot — een product van <strong>Praesidion Security B.V.</strong> • KvK 97640794 • Limburg, Nederland</div>
+        <div style="display:flex; gap:18px; font-size:14px;">
+          <a href="#trust" style="color:var(--brand);">Privacy & veiligheid</a>
+          <a href="mailto:emily@praesidion.com" style="color:var(--brand);">emily@praesidion.com</a>
+          <a href="tel:0462402401" style="color:var(--brand);">046 240 2401</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const successBox = document.getElementById('successBox');
+    const planButtons = Array.from(document.querySelectorAll('[data-plan]'));
+    const demoInbox = document.getElementById('demoInbox');
+    const demoStats = document.getElementById('demoStats');
+    const demoHeadline = document.getElementById('demoHeadline');
+    const demoPlanLabel = document.getElementById('demoPlanLabel');
+    const demoDigest = document.getElementById('demoDigest');
+    const detailSubject = document.getElementById('detailSubject');
+    const detailMeta = document.getElementById('detailMeta');
+    const detailSummary = document.getElementById('detailSummary');
+    const detailWhy = document.getElementById('detailWhy');
+    const detailDraft = document.getElementById('detailDraft');
+    const detailActions = document.getElementById('detailActions');
+
+    let currentDemo = null;
+    let selectedMessageId = null;
+
+    function euro(value) {
+      return new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value || 0);
+    }
+
+    function chipClass(bucket) {
+      if (!bucket) return 'chip';
+      if (bucket.startsWith('P1')) return 'chip p1';
+      if (bucket.startsWith('P2')) return 'chip p2';
+      if (bucket.startsWith('P3')) return 'chip p3';
+      return 'chip p4';
+    }
+
+    function renderStats(stats) {
+      demoStats.innerHTML = `
+        <div class="demo-stat"><strong>${stats.inboxItems}</strong><span class="muted">seeded inboxitems</span></div>
+        <div class="demo-stat"><strong>${stats.p1}</strong><span class="muted">direct oppakken</span></div>
+        <div class="demo-stat"><strong>${euro(stats.revenueAtRisk)}</strong><span class="muted">waarde in inbox</span></div>
+        <div class="demo-stat"><strong>${stats.avgFirstPassSavedMinutes} min</strong><span class="muted">geschatte eerste-pass besparing</span></div>
+      `;
+    }
+
+    function renderDigest(lines) {
+      demoDigest.innerHTML = lines.map(line => `<li>${line}</li>`).join('');
+    }
+
+    function renderDetails(message) {
+      if (!message) {
+        detailSubject.textContent = 'Selecteer een bericht';
+        detailMeta.textContent = 'Triage, samenvatting, draft en acties verschijnen hier.';
+        detailSummary.textContent = '—';
+        detailWhy.innerHTML = '<li>—</li>';
+        detailDraft.textContent = '—';
+        detailActions.innerHTML = '<li>—</li>';
+        return;
+      }
+
+      detailSubject.textContent = message.subject;
+      detailMeta.textContent = `${message.fromName} • ${message.company} • ${message.mailbox} • ${message.triage.bucket} • score ${message.triage.score}`;
+      detailSummary.textContent = message.summary;
+      detailWhy.innerHTML = message.triage.why.map(item => `<li>${item}</li>`).join('');
+      detailDraft.textContent = message.replyDraft;
+      detailActions.innerHTML = message.actions.map(item => `<li>${item}</li>`).join('');
+    }
+
+    function renderInbox(messages) {
+      demoInbox.innerHTML = messages.map((message) => `
+        <button type="button" class="inbox-item ${message.id === selectedMessageId ? 'active' : ''}" data-message-id="${message.id}">
+          <div class="item-top">
+            <div>
+              <div class="item-subject">${message.subject}</div>
+              <div class="item-meta">${message.fromName} • ${message.company}</div>
+            </div>
+            <div class="chip-row"><span class="${chipClass(message.triage.bucket)}">${message.triage.bucket}</span></div>
+          </div>
+          <div class="item-preview">${message.preview}</div>
+          <div class="chip-row">
+            <span class="chip">${message.recommendedOwner}</span>
+            <span class="chip">${message.deadlineText}</span>
+            <span class="chip">${message.triage.ageMinutes} min oud</span>
+          </div>
+        </button>
+      `).join('');
+
+      demoInbox.querySelectorAll('[data-message-id]').forEach((button) => {
+        button.addEventListener('click', () => {
+          selectedMessageId = button.getAttribute('data-message-id');
+          renderInbox(currentDemo.messages);
+          renderDetails(currentDemo.messages.find(item => item.id === selectedMessageId));
+        });
+      });
+    }
+
+    async function loadDemo(plan = 'team') {
+      planButtons.forEach(button => button.classList.toggle('active', button.dataset.plan === plan));
+      demoHeadline.textContent = 'Demo laden…';
+
+      try {
+        const response = await fetch(`/api/demo?plan=${encodeURIComponent(plan)}`);
+        const result = await response.json();
+        currentDemo = result.demo;
+        demoPlanLabel.textContent = `${currentDemo.plan.label} • ${currentDemo.plan.mailboxLabel}`;
+        demoHeadline.textContent = `${currentDemo.headline} ${currentDemo.plan.promise}`;
+        renderStats(currentDemo.stats);
+        renderDigest(currentDemo.operatorDigest);
+        selectedMessageId = currentDemo.messages[0] ? currentDemo.messages[0].id : null;
+        renderInbox(currentDemo.messages);
+        renderDetails(currentDemo.messages[0] || null);
+      } catch (error) {
+        demoPlanLabel.textContent = 'Demo niet geladen';
+        demoHeadline.textContent = 'Start de lokale server om de live simulatie te tonen.';
+        demoStats.innerHTML = '';
+        demoInbox.innerHTML = '';
+        demoDigest.innerHTML = '<li>Geen demo-data beschikbaar.</li>';
+        renderDetails(null);
+      }
+    }
+
+    planButtons.forEach((button) => {
+      button.addEventListener('click', () => loadDemo(button.dataset.plan));
+    });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      const firstName = data.firstName || 'je';
+      const plan = data.plan || 'gekozen plan';
+      successBox.style.display = 'block';
+      successBox.innerHTML = `<strong>Bezig…</strong><br>Je InboxPilot-aanvraag voor <strong>${plan}</strong> wordt verwerkt.`;
+      window.scrollTo({ top: successBox.offsetTop - 120, behavior: 'smooth' });
+
+      try {
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || 'signup_failed');
+        }
+
+        localStorage.setItem('inboxpilot-last-submission', JSON.stringify({ ...data, leadId: result.leadId, canonicalLeadId: result.canonicalLeadId, checkout: result.checkout, submittedAt: new Date().toISOString() }));
+
+        const auditBits = [];
+        if (result.leadId) auditBits.push(`Lead ID: <code>${result.leadId}</code>`);
+        if (result.duplicate) auditBits.push('Bestaande lead herkend; audit trail bijgewerkt.');
+
+        if (result.appUrl) {
+          successBox.innerHTML = `
+            <strong>✅ Gelukt, ${firstName}!</strong><br><br>
+            <div style="background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.2); border-radius:12px; padding:14px; margin:10px 0;">
+              <strong style="color:#38bdf8;">📋 Je trial-status:</strong><br>
+              • Plan: <strong>${plan}</strong><br>
+              • Status: <strong>Preview workspace actief</strong><br>
+              • Trial: <strong>30 dagen gratis</strong> — je betaalt niets tot ${new Date(Date.now() + 30*24*60*60*1000).toLocaleDateString('nl-NL')}<br>
+              • Na trial: automatische voortzetting, maandelijks opzegbaar, 3 dagen van tevoren herinnering
+            </div>
+            <div style="font-size:13px; color:var(--muted); margin-top:8px;">
+              Je landt nu in je preview workspace. Daar kun je direct prioriteiten bekijken, drafts goedkeuren en follow-ups triagen.
+              De live mailbox-koppeling activeer je daarna in je dashboard.
+            </div>
+          `;
+          setTimeout(() => { window.location.href = result.appUrl; }, 3000);
+        } else if (result.checkout) {
+          successBox.innerHTML = `
+            <strong>✅ Gelukt, ${firstName}!</strong><br><br>
+            <div style="background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.2); border-radius:12px; padding:14px; margin:10px 0;">
+              <strong style="color:#38bdf8;">💳 Volgende stap: trial activeren</strong><br>
+              • Plan: <strong>${plan}</strong><br>
+              • Eerste 30 dagen: <strong>€0</strong><br>
+              • Daarna: maandelijks tarief volgens gekozen plan<br>
+              • Opzeggen kan altijd — geen opzegtermijn, geen verborgen kosten
+            </div>
+            Je gaat nu door naar de checkout.
+          `;
+          setTimeout(() => { window.location.href = result.checkout; }, 3000);
+        } else {
+          successBox.innerHTML = `
+            <strong>✅ Ontvangen, ${firstName}.</strong><br><br>
+            <div style="background:rgba(245,158,11,.08); border:1px solid rgba(245,158,11,.2); border-radius:12px; padding:14px; margin:10px 0;">
+              <strong style="color:#fdba74;">🏢 Enterprise intake</strong><br>
+              Enterprise loopt via schriftelijke intake vanwege governance en maatwerk.
+              Emily neemt binnen 24 uur contact op via <strong>${data.email}</strong>.
+            </div>
+          `;
+        }
+
+        form.reset();
+      } catch (error) {
+        successBox.innerHTML = `<strong>Opslag lukte nog niet.</strong><br>De MVP-server lijkt niet actief of is nog aan het opstarten. Start <code>start-server.ps1</code> in deze map en controleer daarna <code>/health</code>.`;
+      }
+    });
+
+    loadDemo('team');
+  </script>
+</body>
+</html>

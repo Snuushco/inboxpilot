@@ -1,0 +1,12 @@
+{
+  "name": "inboxpilot-vercel",
+  "version": "1.0.0",
+  "description": "InboxPilot MVP — inbox automation for teams (Vercel deployment)",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.16"
+  }
+}
