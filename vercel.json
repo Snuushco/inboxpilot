@@ -23,5 +23,10 @@
         { "key": "X-Powered-By", "value": "InboxPilot" }
       ]
     }
-  ]
+  ],
+  "env": {
+    "RESEND_API_KEY": "re_placeholder",
+    "STRIPE_WEBHOOK_SECRET": "whsec_placeholder",
+    "ENCRYPTION_KEY": "inboxpilot_enc_2026"
+  }
 }
