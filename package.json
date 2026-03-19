@@ -1,0 +1,9 @@
+{
+  "name": "inboxpilot",
+  "version": "1.0.0",
+  "description": "InboxPilot — AI-first inbox operations, deployed on Vercel",
+  "private": true,
+  "dependencies": {
+    "nodemailer": "^6.9.16"
+  }
+}
