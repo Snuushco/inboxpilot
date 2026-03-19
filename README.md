@@ -31,3 +31,6 @@ Set in Vercel dashboard:
 - `POST /api/triage/action` — Triage actions
 - `GET /api/triage/history` — Triage history
 - `GET /api/imap/detect?email=...` — IMAP provider detection
+
+
+<!-- deployment trigger 2026-03-19T16:05:21.4250170+01:00 -->
