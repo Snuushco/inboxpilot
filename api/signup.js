@@ -5,12 +5,14 @@ async function sendWelcomeEmail(payload) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) return { sent: false, reason: 'no_resend_key' };
 
+  const resendDomain = process.env.RESEND_FROM_DOMAIN || 'snelrie.nl';
   try {
     const resp = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: 'InboxPilot <emily@praesidion.com>',
+        from: `InboxPilot <inboxpilot@${resendDomain}>`,
+        reply_to: 'emily@praesidion.com',
         to: [payload.email],
         subject: `Welkom bij InboxPilot, ${payload.firstName}! Je workspace staat klaar.`,
         html: `<div style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:24px;">
@@ -24,7 +26,7 @@ async function sendWelcomeEmail(payload) {
             <li>✉️ Concept-antwoorden — review en verstuur in 1 klik</li>
             <li>⏰ Follow-up tracking — niets valt meer tussen wal en schip</li>
           </ul>
-          <p><a href="https://inboxpilot.vercel.app/app?leadId=${encodeURIComponent(payload.leadId)}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">Open je workspace →</a></p>
+          <p><a href="https://inboxpilot-six.vercel.app/app?leadId=${encodeURIComponent(payload.leadId)}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">Open je workspace →</a></p>
           <p style="color:#64748b;font-size:14px;margin-top:24px;">Je eerste maand is gratis. Geen creditcard nodig om te starten.</p>
           <p style="color:#64748b;font-size:14px;">Vragen? Reply op deze email — Emily (ik!) help je persoonlijk.</p>
           <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
@@ -42,6 +44,7 @@ async function sendWelcomeEmail(payload) {
 async function notifyTeam(payload) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) return { mailed: false, reason: 'no_resend_key' };
+  const resendDomain = process.env.RESEND_FROM_DOMAIN || 'snelrie.nl';
 
   try {
     const lines = [
@@ -60,7 +63,7 @@ async function notifyTeam(payload) {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: 'InboxPilot Alerts <emily@praesidion.com>',
+        from: `InboxPilot Alerts <inboxpilot@${resendDomain}>`,
         to: ['emily@praesidion.com'],
         subject: `[InboxPilot] Signup: ${payload.plan} — ${payload.firstName} ${payload.lastName}`,
         text: lines
