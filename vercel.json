@@ -1,45 +1,27 @@
-﻿{
-    "version":  2,
-    "framework":  null,
-    "buildCommand":  "",
-    "outputDirectory":  "public",
-    "installCommand":  "npm install --production",
-    "functions":  {
-                      "api/**/*.js":  {
-                                          "maxDuration":  30
-                                      }
-                  },
-    "rewrites":  [
-                     {
-                         "source":  "/app",
-                         "destination":  "/app.html"
-                     },
-                     {
-                         "source":  "/health",
-                         "destination":  "/api/health"
-                     }
-                 ],
-    "headers":  [
-                    {
-                        "source":  "/(.*)",
-                        "headers":  [
-                                        {
-                                            "key":  "X-Content-Type-Options",
-                                            "value":  "nosniff"
-                                        },
-                                        {
-                                            "key":  "X-Frame-Options",
-                                            "value":  "DENY"
-                                        },
-                                        {
-                                            "key":  "Referrer-Policy",
-                                            "value":  "same-origin"
-                                        },
-                                        {
-                                            "key":  "X-Powered-By",
-                                            "value":  "InboxPilot"
-                                        }
-                                    ]
-                    }
-                ]
+{
+  "version": 2,
+  "framework": null,
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "installCommand": "npm install --production",
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    { "source": "/app", "destination": "/app.html" },
+    { "source": "/health", "destination": "/api/health" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "same-origin" },
+        { "key": "X-Powered-By", "value": "InboxPilot" }
+      ]
+    }
+  ]
 }
