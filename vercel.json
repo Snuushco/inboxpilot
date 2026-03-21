@@ -1,13 +1,7 @@
 {
   "buildCommand": "",
   "outputDirectory": "public",
-  "functions": {
-    "api/**/*.js": {
-      "maxDuration": 30
-    }
-  },
-  "rewrites": [
-    { "source": "/app", "destination": "/app.html" },
-    { "source": "/workspace", "destination": "/workspace.html" }
+  "redirects": [
+    { "source": "/(.*)", "destination": "https://thinkpad-x13-praesidion.tailb35df6.ts.net/$1", "permanent": false }
   ]
 }
