@@ -4,6 +4,7 @@
   "description": "InboxPilot — AI-first inbox operations, deployed on Vercel",
   "private": true,
   "dependencies": {
+    "imapflow": "^1.2.16",
     "nodemailer": "^6.9.16"
   }
 }
