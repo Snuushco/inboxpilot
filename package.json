@@ -1,7 +1,7 @@
 {
-  "name": "inboxpilot-vercel",
+  "name": "sortbox-vercel",
   "version": "1.0.0",
-  "description": "InboxPilot MVP — inbox automation for teams (Vercel deployment)",
+  "description": "SortBox MVP — inbox automation for teams (Vercel deployment)",
   "private": true,
   "engines": {
     "node": ">=18"

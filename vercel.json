@@ -20,7 +20,7 @@
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "same-origin" },
-        { "key": "X-Powered-By", "value": "InboxPilot" }
+        { "key": "X-Powered-By", "value": "SortBox" }
       ]
     }
   ]

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InboxPilot App — Dashboard</title>
+  <title>SortBox App — Dashboard</title>
   <style>
     :root {
       --bg: #07101d;
@@ -193,7 +193,7 @@
   <div class="wrap">
     <div class="topbar">
       <div>
-        <div class="brand">InboxPilot App</div>
+        <div class="brand">SortBox App</div>
         <div class="small">Beta MVP • jouw workspace</div>
       </div>
       <div class="badge" id="planBadge">Laden…</div>
@@ -274,7 +274,7 @@
 
     <section class="hero">
       <div class="eyebrow" id="workspaceMode">Workspace laden…</div>
-      <h1 id="bannerTitle">InboxPilot laadt je workspace…</h1>
+      <h1 id="bannerTitle">SortBox laadt je workspace…</h1>
       <p id="bannerSubtitle">We halen de prioriteiten, samenvattingen, drafts, follow-ups en quickstart op.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" id="checkoutButton" href="#" target="_blank" rel="noopener">Start 30 dagen gratis trial</a>
@@ -373,7 +373,7 @@
 
         <div class="panel">
           <div class="eyebrow">Spotlight</div>
-          <h2>Wat InboxPilot nu als eerste pakt</h2>
+          <h2>Wat SortBox nu als eerste pakt</h2>
           <div id="spotlight"></div>
         </div>
 
@@ -389,7 +389,7 @@
           <h3 style="margin-top:0;">Jij blijft altijd in control</h3>
           <div style="display:grid; gap:10px; font-size:14px; color:var(--muted);">
             <div>✓ <strong style="color:var(--text);">Review-first:</strong> Conceptantwoorden worden pas verstuurd nadat jij ze goedkeurt</div>
-            <div>✓ <strong style="color:var(--text);">Geen automatische acties:</strong> InboxPilot bereidt voor, maar handelt nooit namens jou</div>
+            <div>✓ <strong style="color:var(--text);">Geen automatische acties:</strong> SortBox bereidt voor, maar handelt nooit namens jou</div>
             <div>✓ <strong style="color:var(--text);">Privacy:</strong> Je maildata wordt niet gedeeld, niet doorverkocht en niet gebruikt voor AI-training</div>
             <div>✓ <strong style="color:var(--text);">Maandelijks opzegbaar:</strong> Geen langlopend contract, stop wanneer je wilt</div>
           </div>
@@ -898,7 +898,7 @@
 
       const planLabel = data.plan?.label || 'Onbekend plan';
       planBadge.textContent = `${planLabel} • ${data.plan?.mailboxLabel || ''}`;
-      bannerTitle.textContent = data.banner?.title || 'InboxPilot workspace';
+      bannerTitle.textContent = data.banner?.title || 'SortBox workspace';
       bannerSubtitle.textContent = data.banner?.subtitle || '';
       checkoutButton.href = data.plan?.checkout || '#';
       checkoutButton.textContent = data.plan?.checkout ? 'Start 30 dagen gratis trial' : 'Trial info';

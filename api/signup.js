@@ -11,15 +11,15 @@ async function sendWelcomeEmail(payload) {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: `InboxPilot <inboxpilot@${resendDomain}>`,
+        from: `SortBox <sortbox@${resendDomain}>`,
         reply_to: 'emily@praesidion.com',
         to: [payload.email],
-        subject: `Welkom bij InboxPilot, ${payload.firstName}! Je workspace staat klaar.`,
+        subject: `Welkom bij SortBox, ${payload.firstName}! Je workspace staat klaar.`,
         html: `<div style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:24px;">
-          <h1 style="color:#1e293b;">Welkom bij InboxPilot 🚀</h1>
+          <h1 style="color:#1e293b;">Welkom bij SortBox 🚀</h1>
           <p>Hi ${payload.firstName},</p>
           <p>Je <strong>${payload.planKey?.toUpperCase() || 'Team'}</strong>-workspace voor <strong>${payload.company || 'je organisatie'}</strong> staat klaar.</p>
-          <p>Wat InboxPilot direct voor je doet:</p>
+          <p>Wat SortBox direct voor je doet:</p>
           <ul>
             <li>📬 Inbox prioritering — urgente mails bovenaan</li>
             <li>📝 Automatische samenvattingen — scan in seconden</li>
@@ -30,7 +30,7 @@ async function sendWelcomeEmail(payload) {
           <p style="color:#64748b;font-size:14px;margin-top:24px;">Je eerste maand is gratis. Geen creditcard nodig om te starten.</p>
           <p style="color:#64748b;font-size:14px;">Vragen? Reply op deze email — Emily (ik!) help je persoonlijk.</p>
           <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
-          <p style="color:#94a3b8;font-size:12px;">InboxPilot by Praesidion • <a href="https://praesidion.com">praesidion.com</a></p>
+          <p style="color:#94a3b8;font-size:12px;">SortBox by Praesidion • <a href="https://praesidion.com">praesidion.com</a></p>
         </div>`
       })
     });
@@ -48,7 +48,7 @@ async function notifyTeam(payload) {
 
   try {
     const lines = [
-      'Nieuwe InboxPilot signup',
+      'Nieuwe SortBox signup',
       '',
       `Naam: ${payload.firstName} ${payload.lastName}`,
       `Email: ${payload.email}`,
@@ -63,9 +63,9 @@ async function notifyTeam(payload) {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: `InboxPilot Alerts <inboxpilot@${resendDomain}>`,
+        from: `SortBox Alerts <sortbox@${resendDomain}>`,
         to: ['emily@praesidion.com'],
-        subject: `[InboxPilot] Signup: ${payload.plan} — ${payload.firstName} ${payload.lastName}`,
+        subject: `[SortBox] Signup: ${payload.plan} — ${payload.firstName} ${payload.lastName}`,
         text: lines
       })
     });

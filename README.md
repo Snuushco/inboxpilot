@@ -1,4 +1,4 @@
-# InboxPilot MVP — Vercel Deployment
+# SortBox MVP — Vercel Deployment
 
 Inbox automation for teams. Serverless deployment on Vercel.
 

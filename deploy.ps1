@@ -1,8 +1,8 @@
-# InboxPilot MVP — Vercel Deployment Script
+# SortBox MVP — Vercel Deployment Script
 # Prerequisites: vercel CLI installed, logged in (vercel login)
 # Run from project root: .\deploy.ps1
 
-Write-Host "InboxPilot MVP — Vercel Deployment" -ForegroundColor Cyan
+Write-Host "SortBox MVP — Vercel Deployment" -ForegroundColor Cyan
 Write-Host "===================================" -ForegroundColor Cyan
 
 # Check vercel auth

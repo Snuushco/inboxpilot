@@ -3,12 +3,12 @@ const crypto = require('crypto');
 
 const confirmations = {
   approve_draft: { title: 'Concept goedgekeurd', detail: 'De reply staat klaar voor verzending.', icon: '✅', nextStep: 'Reply verschijnt in je outbox zodra de mailbox-koppeling actief is.' },
-  snooze: { title: 'Bericht gesnooze', detail: 'Dit bericht komt over 2 uur terug in je priority queue.', icon: '⏰', nextStep: 'InboxPilot herinnert je automatisch.' },
+  snooze: { title: 'Bericht gesnooze', detail: 'Dit bericht komt over 2 uur terug in je priority queue.', icon: '⏰', nextStep: 'SortBox herinnert je automatisch.' },
   archive: { title: 'Gearchiveerd', detail: 'Dit bericht is uit je actieve queue gehaald.', icon: '📁', nextStep: 'Je kunt het altijd terugvinden via het archief.' },
   assign: { title: 'Toegewezen', detail: 'Dit bericht is gerouteerd naar de aanbevolen owner.', icon: '👤', nextStep: 'De owner ontvangt een notificatie.' },
   escalate: { title: 'Geëscaleerd', detail: 'Dit bericht krijgt prioriteit bij management.', icon: '🚨', nextStep: 'Escalatie-notificatie wordt verstuurd.' },
   mark_done: { title: 'Afgerond', detail: 'Dit bericht is gemarkeerd als afgehandeld.', icon: '✔️', nextStep: 'Het telt mee in je productiviteitsmetrics.' },
-  dismiss: { title: 'Genegeerd', detail: 'Dit bericht is gefilterd als niet-relevant.', icon: '🗑️', nextStep: 'InboxPilot leert van deze keuze.' }
+  dismiss: { title: 'Genegeerd', detail: 'Dit bericht is gefilterd als niet-relevant.', icon: '🗑️', nextStep: 'SortBox leert van deze keuze.' }
 };
 
 module.exports = function handler(req, res) {

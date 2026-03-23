@@ -10,7 +10,7 @@ module.exports = function handler(req, res) {
     ok: true,
     status: {
       ok: true,
-      service: 'inboxpilot-mvp',
+      service: 'sortbox-mvp',
       platform: 'vercel',
       emailEnabled: !!process.env.RESEND_API_KEY,
       counts: { totalEvents: 0, uniqueLeads: 0, duplicates: 0 },
